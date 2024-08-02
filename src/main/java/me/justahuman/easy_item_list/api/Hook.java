@@ -77,7 +77,7 @@ public abstract class Hook {
     }
 
     public void handleItem(ItemStack itemStack) {
-        if (!isCustom(itemStack) || alreadyAdded(itemStack)) {
+        if (itemStack == null || !isCustom(itemStack) || alreadyAdded(itemStack)) {
             return;
         }
 
