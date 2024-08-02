@@ -1,6 +1,8 @@
 package me.justahuman.easy_item_list.api;
 
 import me.justahuman.easy_item_list.EasyItemList;
+import me.justahuman.easy_item_list.mixin.TransformRecipeAccessor;
+import me.justahuman.easy_item_list.mixin.TrimRecipeAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.ComponentMap;
 import net.minecraft.component.DataComponentType;
@@ -18,17 +20,14 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public abstract class Hook {
     public static final Set<DataComponentType<?>> COMPONENTS_TO_CHECK = Set.of(DataComponentTypes.ITEM_NAME, DataComponentTypes.CUSTOM_NAME, DataComponentTypes.LORE, DataComponentTypes.FOOD, DataComponentTypes.CUSTOM_MODEL_DATA);
     public static final RegistryWrapper.WrapperLookup LOOKUP = BuiltinRegistries.createWrapperLookup();
     protected static final List<ItemStack> ITEM_STACKS = new ArrayList<>();
-    protected static final Map<ItemStack, String> GROUPS = new HashMap<>();
 
     public abstract boolean alreadyAdded(ItemStack itemStack);
     public abstract void addItemStacks();
@@ -46,14 +45,18 @@ public abstract class Hook {
                 return;
             }
 
-            for (Ingredient ingredient : recipe.getIngredients()) {
-                for (ItemStack itemStack : ingredient.getMatchingStacks()) {
-                    handleItem(itemStack.copyWithCount(1), recipe.getGroup());
-                }
+            if (recipe instanceof TransformRecipeAccessor transformRecipe) {
+                handleIngredients(transformRecipe.getBase(), transformRecipe.getTemplate(), transformRecipe.getAddition());
+                handleItem(transformRecipe.getResult().copyWithCount(1));
+                return;
+            } else if (recipe instanceof TrimRecipeAccessor trimRecipe) {
+                handleIngredients(trimRecipe.getBase(), trimRecipe.getTemplate(), trimRecipe.getAddition());
+            } else {
+                handleIngredients(recipe.getIngredients().toArray(Ingredient[]::new));
             }
 
             try {
-                handleItem(recipe.getResult(LOOKUP).copyWithCount(1), recipe.getGroup());
+                handleItem(recipe.getResult(LOOKUP).copyWithCount(1));
             } catch (Exception e) {
                 EasyItemList.LOGGER.error("Unexpected error getting the output of recipe " + entry.id(), e);
             }
@@ -61,18 +64,24 @@ public abstract class Hook {
 
         if (!ITEM_STACKS.isEmpty()) {
             ITEM_STACKS.sort(Comparator.comparing(stack -> stack.getName().getString()));
-            ITEM_STACKS.sort(Comparator.comparing(GROUPS::get));
             addItemStacks();
         }
     }
 
-    public void handleItem(ItemStack itemStack, String group) {
+    public void handleIngredients(Ingredient... ingredients) {
+        for (Ingredient ingredient : ingredients) {
+            for (ItemStack itemStack : ingredient.getMatchingStacks()) {
+                handleItem(itemStack.copyWithCount(1));
+            }
+        }
+    }
+
+    public void handleItem(ItemStack itemStack) {
         if (!isCustom(itemStack) || alreadyAdded(itemStack)) {
             return;
         }
 
         ITEM_STACKS.add(itemStack);
-        GROUPS.put(itemStack, group == null ? "" : group);
     }
 
     public boolean isCustom(ItemStack itemStack) {
