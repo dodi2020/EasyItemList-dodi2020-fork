@@ -10,6 +10,8 @@ import me.justahuman.easy_item_list.api.Hook;
 import net.minecraft.item.ItemStack;
 
 public class EmiHook extends Hook implements EmiPlugin {
+    private static final Comparison COMPARISON = Comparison.compareComponents();
+
     @Override
     public void register(EmiRegistry ignored) {
         load();
@@ -18,7 +20,8 @@ public class EmiHook extends Hook implements EmiPlugin {
     @Override
     public boolean alreadyAdded(ItemStack itemStack) {
         final EmiStack emiStack = EmiStack.of(itemStack);
-        return ITEM_STACKS.stream().anyMatch(stack -> Comparison.compareComponents().compare(emiStack, EmiStack.of(stack)));
+        return ITEM_STACKS.stream().anyMatch(stack ->
+                stack.getItem() == itemStack.getItem() && COMPARISON.compare(emiStack, EmiStack.of(stack)));
     }
 
     @Override
@@ -26,7 +29,7 @@ public class EmiHook extends Hook implements EmiPlugin {
         for (ItemStack itemStack : ITEM_STACKS) {
             EmiStack emiStack = EmiStack.of(itemStack);
             EmiStackList.stacks.add(emiStack);
-            EmiComparisonDefaults.comparisons.put(emiStack.getKey(), Comparison.compareComponents());
+            EmiComparisonDefaults.comparisons.put(emiStack.getKey(), COMPARISON);
         }
     }
 }
