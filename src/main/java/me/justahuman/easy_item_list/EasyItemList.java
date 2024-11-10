@@ -8,6 +8,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
 
 public class EasyItemList implements ClientModInitializer {
+    public static final String MOD_ID = "easy_item_list";
     public static final Logger LOGGER = LogUtils.getLogger();
 
     @Override
