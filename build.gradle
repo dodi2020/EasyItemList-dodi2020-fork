@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.6-SNAPSHOT'
+    id 'fabric-loom' version '1.14-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -20,6 +20,11 @@ repositories {
         name = "BlameJared (JEI)"
         url = "https://maven.blamejared.com/"
     }
+
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+    }
 }
 
 dependencies {
@@ -27,7 +32,7 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    modImplementation ("dev.emi:emi-fabric:${project.emi_version}") {
+    modImplementation ("maven.modrinth:emi:${project.emi_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
