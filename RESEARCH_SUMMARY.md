@@ -3,18 +3,20 @@
 **Date:** December 29, 2025  
 **Objective:** Research and document migration path from Minecraft 1.20.6 to 1.21.11 for EasyItemList mod
 
-## Network Access Status
+## Network Access Status (Current Environment)
+
+> **Note:** This section describes the current build environment constraints and will not apply if building in a different environment.
 
 ✅ **VPN Access Successful** - Web search and API queries successfully completed  
 ❌ **Maven Repository Access** - `maven.fabricmc.net` still blocked at DNS level during build
 
-Despite VPN being enabled as mentioned by the user, the build environment continues to experience DNS resolution failures for `maven.fabricmc.net`. This is a infrastructure/network configuration issue beyond the scope of code changes.
+Despite VPN being enabled as mentioned by the user, the build environment continues to experience DNS resolution failures for `maven.fabricmc.net`. This is a infrastructure/network configuration issue specific to this environment.
 
 ## Research Completed
 
 ### 1. Minecraft 1.21.11 Release Information
 
-- **Release Date:** December 9, 2025
+- **Release Date:** December 9, 2025 *(20 days ago as of this research on Dec 29, 2025)*
 - **Update Name:** "Mounts of Mayhem"
 - **Significance:** Last version using 1.x.y format and Java SE 21 requirement
 - **Protocol Version:** 774
