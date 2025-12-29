@@ -1,10 +1,7 @@
 package me.justahuman.easy_item_list;
 
 import com.mojang.logging.LogUtils;
-import dev.architectury.event.events.client.ClientRecipeUpdateEvent;
-import me.justahuman.easy_item_list.hooks.ReiHook;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
 
 public class EasyItemList implements ClientModInitializer {
@@ -13,13 +10,7 @@ public class EasyItemList implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        ClientRecipeUpdateEvent.EVENT.register(manager -> {
-            if (FabricLoader.getInstance().isModLoaded("roughlyenoughitems")) {
-                final ReiHook hook = ReiHook.getInstance();
-                if (hook != null) {
-                    hook.load();
-                }
-            }
-        });
+        // JEI and EMI handle their own recipe loading through their plugin systems
+        // No additional initialization needed
     }
 }

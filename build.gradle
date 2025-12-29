@@ -20,11 +20,6 @@ repositories {
         name = "BlameJared (JEI)"
         url = "https://maven.blamejared.com/"
     }
-
-    maven {
-        name = "Shedanial (REI)"
-        url = "https://maven.shedaniel.me/"
-    }
 }
 
 dependencies {
@@ -39,8 +34,6 @@ dependencies {
     modImplementation("mezz.jei:jei-${project.jei_version}") {
         exclude(group: "mezz.jei")
     }
-
-    modApi "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 }
 
 processResources {

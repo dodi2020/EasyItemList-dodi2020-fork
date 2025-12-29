@@ -3,7 +3,7 @@
   "id": "easy_item_list",
   "version": "${version}",
   "name": "EasyItemList",
-  "description": "Automatically adds server side custom items to JEI, REI, and EMI!",
+  "description": "Automatically adds server side custom items to JEI and EMI!",
   "authors": [ "JustAHuman_xD" ],
   "contact": {
     "homepage": "https://modrinth.com/mod/easy-item-list",
@@ -31,9 +31,6 @@
     ],
     "jei_mod_plugin": [
       "me.justahuman.easy_item_list.hooks.JeiHook"
-    ],
-    "rei_client": [
-      "me.justahuman.easy_item_list.hooks.ReiHook"
     ]
   },
   "mixins": [
